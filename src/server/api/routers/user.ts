@@ -1,3 +1,4 @@
+import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { z } from "zod";
 
 import {
@@ -7,6 +8,14 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
+  getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
+  }),
+
   updateUser: protectedProcedure
     .input(
       z.object({
@@ -28,3 +37,10 @@ export const userRouter = createTRPCRouter({
       });
     }),
 });
+
+type UserRouter = typeof userRouter;
+type RouterInput = inferRouterInputs<UserRouter>;
+type RouterOutput = inferRouterOutputs<UserRouter>;
+
+// export type TypeEventRouterInput = RouterInput["create"];
+export type TypeUser = RouterOutput["getCurrentUser"];

@@ -3,6 +3,8 @@
 import Link from "next/link";
 
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { TypeUser } from "~/server/api/routers/user";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,25 +46,21 @@ const FormSchema = z.object({
   }),
   email: z.string().email(),
   colorScheme: z.string().min(1),
-  description: z.string().min(2, {
-    message: "Description must be at least 2 characters.",
-  }),
 });
 
-export function FormSetting() {
+export function FormSetting({ initialUser }: { initialUser: TypeUser }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
-      description: "",
+      email: "",
       colorScheme: "",
     },
   });
 
-  const { mutate, isPending } = api.notes.createNote.useMutation({
+  const { mutate, isPending } = api.user.updateUser.useMutation({
     onSuccess: () => {
-      form.reset();
-      toast.success("Note Created!", {
+      toast.success("Profile Updated!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -75,7 +73,7 @@ export function FormSetting() {
     },
     onError: () => {
       console.log("error");
-      toast.error("Note failed to create!", {
+      toast.error("Failed to update profile!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -88,7 +86,17 @@ export function FormSetting() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {}
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    mutate(data);
+  }
+
+  useEffect(() => {
+    if (initialUser) {
+      form.setValue("name", initialUser.name as string);
+      form.setValue("email", initialUser.email as string);
+      form.setValue("colorScheme", initialUser.colorScheme ?? ("" as string));
+    }
+  }, [initialUser]);
 
   return (
     <Card>
@@ -155,8 +163,10 @@ export function FormSetting() {
                   <FormItem>
                     <FormLabel>Color Scheme</FormLabel>
                     <Select
+                      disabled={isPending}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
