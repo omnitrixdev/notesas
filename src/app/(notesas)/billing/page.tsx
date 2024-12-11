@@ -1,11 +1,7 @@
-import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { CheckCircle2 } from "lucide-react";
+import { StripeSubscriptionCreationButton } from "~/components/ButtonUtils";
+import { Card, CardContent } from "~/components/ui/card";
+import { api } from "~/trpc/server";
 
 const featureItems = [
   {
@@ -55,8 +51,8 @@ export default function Billing() {
             ))}
           </ul>
 
-          <form className="w-full" action={createSubscription}>
-            <StripeSubscriptionCreationButton />
+          <form className="w-full">
+            <StripeSubscriptionCreationButton pending={true} />
           </form>
         </div>
       </Card>

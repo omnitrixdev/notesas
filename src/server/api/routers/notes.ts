@@ -19,6 +19,9 @@ export const notesRouter = createTRPCRouter({
           },
         },
         Note: {
+          orderBy: {
+            createdAt: "desc",
+          },
           select: {
             id: true,
             title: true,
