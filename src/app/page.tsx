@@ -1,6 +1,13 @@
-import { Button } from "~/components/ui/button";
+import { redirect } from "next/navigation";
+import { LandingPageLogin } from "~/components/ButtonLogin";
+import { auth } from "~/server/auth";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect("/dashboard");
+  }
   return (
     <section className="flex h-[90vh] items-center justify-center bg-background">
       <div className="relative mx-auto w-full max-w-7xl items-center px-5 py-12 md:px-12 lg:px-16">
@@ -22,9 +29,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mx-auto mt-10 flex max-w-sm justify-center">
-            <Button size="lg" className="w-full">
-              Sign Up for free
-            </Button>
+            <LandingPageLogin />
           </div>
         </div>
       </div>

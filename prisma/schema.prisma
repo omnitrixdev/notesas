@@ -65,6 +65,7 @@ model User {
     posts         Post[]
     Subscription  Subscription?
     Note          Note[]
+    colorScheme   String        @default("theme-orange")
 }
 
 model VerificationToken {
