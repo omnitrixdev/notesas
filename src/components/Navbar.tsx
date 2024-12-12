@@ -7,14 +7,6 @@ import { auth } from "~/server/auth";
 
 export async function Navbar() {
   const session = await auth();
-  console.log("session", session);
-
-  const user = {
-    email: "marshal.saas@gmail.com",
-    given_name: "Marshall",
-    picture:
-      "https://avatars.dicebear.com/api/initials/marshal.saas@gmail.com.svg",
-  };
 
   return (
     <nav className="flex h-[10vh] items-center border-b bg-background">
