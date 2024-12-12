@@ -8,21 +8,28 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import { ToastContainer } from "react-toastify";
 import { Navbar } from "~/components/Navbar";
+import { api } from "~/trpc/server";
 
 export const metadata: Metadata = {
   title: "NoteSaas",
   description:
     "NoteSaas is a note taking app that allows you to create, edit, and share notes.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [
+    {
+      rel: "icon",
+      url: "/favicon.ico",
+    },
+  ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const theme = await api.user.getColorScheme();
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable}`}
+      className={`${GeistSans.variable} ${theme?.colorScheme ?? "theme-auto"} `}
       suppressHydrationWarning
     >
       <body>

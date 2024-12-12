@@ -5,13 +5,13 @@ import { api } from "~/trpc/server";
 
 const featureItems = [
   {
-    name: "Lorem Ipsum something",
+    name: "Unlimited notes",
   },
   {
-    name: "Lorem Ipsum something",
+    name: "Support for multiple notes",
   },
   {
-    name: "Lorem Ipsum something",
+    name: "Support developer",
   },
   {
     name: "Lorem Ipsum something",

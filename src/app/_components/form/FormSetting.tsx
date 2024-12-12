@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { TypeUser } from "~/server/api/routers/user";
 import { Input } from "~/components/ui/input";
@@ -49,6 +50,7 @@ const FormSchema = z.object({
 });
 
 export function FormSetting({ initialUser }: { initialUser: TypeUser }) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -60,6 +62,7 @@ export function FormSetting({ initialUser }: { initialUser: TypeUser }) {
 
   const { mutate, isPending } = api.user.updateUser.useMutation({
     onSuccess: () => {
+      router.refresh();
       toast.success("Profile Updated!", {
         position: "bottom-right",
         autoClose: 5000,
@@ -166,11 +169,15 @@ export function FormSetting({ initialUser }: { initialUser: TypeUser }) {
                       disabled={isPending}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select your preferred color scheme" />
+                          <SelectValue
+                            placeholder={
+                              initialUser?.colorScheme ??
+                              "Select your preferred color scheme"
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -197,8 +204,8 @@ export function FormSetting({ initialUser }: { initialUser: TypeUser }) {
             <Button asChild variant="destructive">
               <Link href="/dashboard">Cancel</Link>
             </Button>
-            <Button className="flex w-[100px] items-center justify-center">
-              {isPending ? <Spinner /> : "Create Note"}
+            <Button className="flex w-[120px] items-center justify-center">
+              {isPending ? <Spinner /> : "Save Changes"}
             </Button>
           </CardFooter>
         </form>

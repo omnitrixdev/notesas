@@ -8,6 +8,18 @@ import {
 } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
+  getColorScheme: publicProcedure.query(async ({ ctx }) => {
+    if (!ctx?.session?.user) return null;
+    return await ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        colorScheme: true,
+      },
+    });
+  }),
+
   getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.db.user.findUnique({
       where: {

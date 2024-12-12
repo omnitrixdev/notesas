@@ -55,17 +55,18 @@ model Session {
 }
 
 model User {
-    id            String        @id @default(cuid())
-    name          String?
-    email         String?       @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
-    Subscription  Subscription?
-    Note          Note[]
-    colorScheme   String        @default("theme-orange")
+    id               String        @id @default(cuid())
+    name             String?
+    email            String?       @unique
+    emailVerified    DateTime?
+    image            String?
+    stripeCustomerId String?       @unique
+    accounts         Account[]
+    sessions         Session[]
+    posts            Post[]
+    Subscription     Subscription?
+    Note             Note[]
+    colorScheme      String        @default("theme-orange")
 }
 
 model VerificationToken {
