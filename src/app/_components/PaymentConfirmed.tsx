@@ -35,7 +35,7 @@ export function PaymentConfirmed() {
 
   return (
     <div className="mt-5 w-full sm:mt-6">
-      <Button className="w-full" asChild>
+      <Button disabled={isLoading} className="w-full" asChild>
         <Link href="/">Go back to Dashboard</Link>
       </Button>
     </div>

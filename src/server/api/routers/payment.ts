@@ -8,6 +8,21 @@ import {
 } from "~/server/api/trpc";
 
 export const paymentRouter = createTRPCRouter({
+  getLimitAvailable: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.findUnique({
+      where: {
+        id: ctx?.session?.user.id,
+      },
+      select: {
+        Note: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+  }),
+
   getCurrentSubscription: protectedProcedure.query(async ({ ctx }) => {
     const user = await ctx.db.user.findUnique({
       where: {

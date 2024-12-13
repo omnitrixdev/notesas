@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 import { Textarea } from "~/components/ui/textarea";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -41,6 +42,7 @@ const FormSchema = z.object({
 });
 
 export function FormCreateNote() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -52,6 +54,7 @@ export function FormCreateNote() {
   const { mutate, isPending } = api.notes.createNote.useMutation({
     onSuccess: () => {
       form.reset();
+      router.refresh();
       toast.success("Note Created!", {
         position: "bottom-right",
         autoClose: 5000,

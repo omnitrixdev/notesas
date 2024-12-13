@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { CreditCard, DoorClosed, Home, Settings } from "lucide-react";
+import { CreditCard, DoorClosed, Home, Settings, Wallet } from "lucide-react";
 import { ListRenderer } from "./pattern/ListRenderer";
 import { createElement } from "react";
 
@@ -49,7 +49,7 @@ export function UserNav({
       <DropdownMenuTrigger>
         <Avatar className="h-10 w-10 rounded-full">
           <AvatarImage src={image} alt="" />
-          <AvatarFallback>Jan</AvatarFallback>
+          <AvatarFallback>?</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>

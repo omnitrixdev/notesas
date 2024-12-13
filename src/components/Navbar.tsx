@@ -4,10 +4,30 @@ import { ThemeToggle } from "~/components/ThemeToggle";
 import { UserNav } from "./UserNav";
 import { NavbarLogin } from "./ButtonLogin";
 import { auth } from "~/server/auth";
+import { Suspense } from "react";
 
-export async function Navbar() {
-  const session = await auth();
+async function UserNavWithData() {
+  const [session] = await Promise.all([auth()]);
 
+  return (
+    <>
+      <ThemeToggle />
+      {session ? (
+        <UserNav
+          email={session?.user?.email as string}
+          image={session?.user?.image as string}
+          name={session?.user?.name as string}
+        />
+      ) : (
+        <div className="flex items-center gap-x-5">
+          <NavbarLogin />
+        </div>
+      )}
+    </>
+  );
+}
+
+export function Navbar() {
   return (
     <nav className="flex h-[10vh] items-center border-b bg-background">
       <div className="container mx-auto flex w-full items-center justify-between px-8">
@@ -18,19 +38,9 @@ export async function Navbar() {
         </Link>
 
         <div className="flex items-center gap-x-5">
-          <ThemeToggle />
-
-          {session ? (
-            <UserNav
-              email={session?.user?.email as string}
-              image={session?.user?.image as string}
-              name={session?.user?.name as string}
-            />
-          ) : (
-            <div className="flex items-center gap-x-5">
-              <NavbarLogin />
-            </div>
-          )}
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserNavWithData />
+          </Suspense>
         </div>
       </div>
     </nav>
