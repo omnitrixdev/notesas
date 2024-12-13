@@ -2,6 +2,7 @@ import { FormCreateNote } from "~/app/_components/form/FormCreateNote";
 import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { FormEditNote } from "~/app/_components/form/FormEditNote";
 
 async function Wrapper({ children }: { children: React.ReactNode }) {
   const notes = await api.notes.getAllNotes();
@@ -22,7 +23,9 @@ export default async function Note({
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Wrapper>{id ? <h1>Note id</h1> : <FormCreateNote />}</Wrapper>
+      <Wrapper>
+        {id ? <FormEditNote noteId={id} /> : <FormCreateNote />}
+      </Wrapper>
     </Suspense>
   );
 }

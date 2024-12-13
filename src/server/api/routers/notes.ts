@@ -38,6 +38,20 @@ export const notesRouter = createTRPCRouter({
     });
   }),
 
+  getNoteById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.note.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          title: true,
+          description: true,
+        },
+      });
+    }),
+
   createNote: protectedProcedure
     .input(z.object({ title: z.string().min(1), description: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -46,6 +60,26 @@ export const notesRouter = createTRPCRouter({
           title: input.title,
           description: input.description,
           userId: ctx.session.user.id,
+        },
+      });
+    }),
+
+  editNote: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1),
+        description: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.note.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          description: input.description,
         },
       });
     }),

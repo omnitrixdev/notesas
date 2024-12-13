@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "~/components/ui/textarea";
 import { Input } from "~/components/ui/input";
@@ -41,7 +42,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function FormCreateNote() {
+export function FormEditNote({ noteId }: { noteId: string }) {
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -51,11 +52,19 @@ export function FormCreateNote() {
     },
   });
 
-  const { mutate, isPending } = api.notes.createNote.useMutation({
+  const { data } = api.notes.getNoteById.useQuery(
+    {
+      id: noteId[0] as string,
+    },
+    {
+      enabled: !!noteId[0],
+    },
+  );
+
+  const { mutate, isPending } = api.notes.editNote.useMutation({
     onSuccess: () => {
-      form.reset();
       router.refresh();
-      toast.success("Note Created!", {
+      toast.success("Note Edited!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -82,14 +91,24 @@ export function FormCreateNote() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    mutate(data);
+    mutate({
+      id: noteId[0] as string,
+      ...data,
+    });
   }
+
+  useEffect(() => {
+    if (noteId) {
+      form.setValue("title", data?.title as string);
+      form.setValue("description", data?.description as string);
+    }
+  }, [data]);
 
   return (
     <Card>
       <Form {...form}>
         <CardHeader>
-          <CardTitle>New Note</CardTitle>
+          <CardTitle>Edit Note</CardTitle>
           <CardDescription>
             Right here you can now create your new notes
           </CardDescription>

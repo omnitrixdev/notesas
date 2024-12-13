@@ -3,10 +3,10 @@
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { signOut } from "~/server/auth";
-import { CreditCard, DoorClosed, Home, Settings, Wallet } from "lucide-react";
+import { CreditCard, DoorClosed, Home, Settings } from "lucide-react";
 import { ListRenderer } from "./pattern/ListRenderer";
 import { createElement } from "react";
+import { signOut } from "next-auth/react";
 
 import {
   DropdownMenu,

@@ -42,7 +42,7 @@ async function DashboardWithData() {
         )}
       </div>
 
-      <ScrollArea className="h-[500px]">
+      <ScrollArea className="h-[480px]">
         <div className="flex flex-col gap-y-4 px-4">
           {notes?.Note.map((item) => (
             <Card

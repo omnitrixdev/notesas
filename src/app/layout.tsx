@@ -42,7 +42,9 @@ export default async function RootLayout({
           >
             <ToastContainer />
             <Navbar />
-            <section className="container mx-auto">{children}</section>
+            <section className="sm:max-w-screen container mx-auto w-full px-4">
+              {children}
+            </section>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>

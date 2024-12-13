@@ -29,8 +29,8 @@ async function UserNavWithData() {
 
 export function Navbar() {
   return (
-    <nav className="flex h-[10vh] items-center border-b bg-background">
-      <div className="container mx-auto flex w-full items-center justify-between px-8">
+    <nav className="flex h-[10vh] items-center border-b bg-background px-4">
+      <div className="container mx-auto flex w-full items-center justify-between">
         <Link href="/">
           <h1 className="text-3xl font-bold">
             Note<span className="text-primary">Saas</span>
