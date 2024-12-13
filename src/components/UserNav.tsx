@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { signOut } from "~/server/auth";
 import { CreditCard, DoorClosed, Home, Settings, Wallet } from "lucide-react";
 import { ListRenderer } from "./pattern/ListRenderer";
 import { createElement } from "react";
@@ -83,6 +84,7 @@ export function UserNav({
 
         <DropdownMenuItem
           className="flex w-full items-center justify-between"
+          onClick={() => signOut()}
           asChild
         >
           <h1>
